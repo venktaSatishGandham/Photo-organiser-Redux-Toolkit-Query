@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "user": "satish"
+    },
+    {
+      "user": "Bethany Price",
+      "id": 2
+    },
+    {
+      "user": "Latoya Kirlin",
+      "id": 3
+    },
+    {
+      "user": "Austin Crooks",
+      "id": 4
+    }
+  ],
+  "albums": [],
+  "photos": []
+}
