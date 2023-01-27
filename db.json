@@ -1,22 +1,41 @@
 {
   "users": [
     {
-      "id": 1,
-      "user": "satish"
-    },
-    {
-      "user": "Bethany Price",
+      "name": "Ricky Lang",
       "id": 2
     },
     {
-      "user": "Latoya Kirlin",
+      "name": "Gina Herzog",
       "id": 3
-    },
-    {
-      "user": "Austin Crooks",
-      "id": 4
     }
   ],
-  "albums": [],
-  "photos": []
+  "albums": [
+    {
+      "userId": 3,
+      "title": "Electronic Soft Pizza",
+      "id": 5
+    },
+    {
+      "userId": 3,
+      "title": "Sleek Steel Fish",
+      "id": 6
+    },
+    {
+      "userId": 3,
+      "title": "Small Steel Bike",
+      "id": 7
+    }
+  ],
+  "photos": [
+    {
+      "albumId": 5,
+      "url": "https://loremflickr.com/150/150/abstract?lock=31761",
+      "id": 1
+    },
+    {
+      "albumId": 5,
+      "url": "https://loremflickr.com/150/150/abstract?lock=33346",
+      "id": 4
+    }
+  ]
 }

@@ -1,39 +1,62 @@
 import { useState } from "react";
-import { RotatingLines } from "react-loader-spinner";
+import { RotatingLines, TailSpin } from "react-loader-spinner";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers, addUser } from "../store";
+import UsersListItem from "./UsersListItem";
 
-export default function UsersList() {
+// import {useThunk} from "../hooks/useThunk";
+
+function UsersList() {
+  // const [doFetchUsers,isLoadingUsers,loadingUsersError]=useThunk(fetchUsers)
+  // const [doCreateUsers,isCretingUser,creatingUserError]=useThunk(addUser)
+
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
   const [loadingUsersError, setLoadingUsersError] = useState(null);
-
+  const [isCreatingUser, setIsCreatingUser] = useState(false);
+  const [creatingUserError, setCreatingUserError] = useState(null);
   const dispatch = useDispatch();
   const { data } = useSelector((state) => {
     return state.users;
   });
 
   useEffect(() => {
+    // doFetchUsers(),[doFetchUsers]
     setIsLoadingUsers(true);
     dispatch(fetchUsers())
       .unwrap()
-      .then(() => {
-        console.log("success");
+      // .then(() => {
+      //   setIsLoadingUsers(false); //.finally() used instead of that
+      // })
+      .catch((err) => {
+        setLoadingUsersError(err);
+        // setIsLoadingUsers(false);  //.finally() used instead of that
       })
-      .catch(() => {
-        console.log("fail!!!");
+      .finally(() => {
+        setIsLoadingUsers(false);
       });
   }, [dispatch]);
 
   const handleUserAdd = () => {
-    dispatch(addUser());
+    //doCreateUsers()
+    setIsCreatingUser(true);
+    dispatch(addUser())
+      .unwrap()
+      .then()
+      .catch((error) => setCreatingUserError(error))
+      .finally(() => setIsCreatingUser(false));
   };
 
+  let content;
+
   if (isLoadingUsers) {
-    return (
-      <div className="flex justify-center align-center">
+    content = (
+      <div
+        style={{ minHeight: "500px" }}
+        className="flex justify-center align-center"
+      >
         <RotatingLines
-          strokeColor="grey"
+          strokeColor="red"
           strokeWidth="5"
           animationDuration="0.75"
           width="96"
@@ -41,31 +64,54 @@ export default function UsersList() {
         />
       </div>
     );
-  }
-  if (loadingUsersError) {
-    return <div>Error fetching data...</div>;
-  }
-
-  const renderUsers = data.map((user) => (
-    <div key={user.id} className="mb-2 border rounded">
-      <div className="d-flex justify-content-between align-items-center p-3 cursor-pointer text-bold ">
-        {user.user}
+  } else if (loadingUsersError) {
+    content = (
+      <div
+        style={{ minHeight: "500px" }}
+        className="text-danger font-weight-bold  d-flex justify-content-center align-items-center "
+      >
+        Error fetching data...
       </div>
-    </div>
-  ));
+    );
+  } else {
+    content = data.map((user) => <UsersListItem key={user.id} user={user} />);
+  }
 
   return (
     <div>
       <div className="d-flex flex-row justify-content-between m-3">
         <h1 className="m-2 text-xl">Users</h1>
-        <button
-          className="btn btn-outline-danger btn-m"
-          onClick={handleUserAdd}
-        >
-          + Add User
-        </button>
+        <div>
+          <button
+            className="btn btn-outline-danger btn-m h-10 w-30"
+            onClick={handleUserAdd}
+          >
+            {isCreatingUser ? (
+              <TailSpin
+                height="20"
+                width="20"
+                color="blue"
+                ariaLabel="tail-spin-loading"
+                radius="1"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={true}
+              />
+            ) : (
+              "+ Add User"
+            )}
+          </button>
+          {creatingUserError && (
+            <div className="text-light font-weight-bold bg-dark text-bold mt-1 p-2 rounded text-uppercase">
+              {" "}
+              Error fetching user...
+            </div>
+          )}
+        </div>
       </div>
-      {renderUsers}
+      {content}
     </div>
   );
 }
+
+export default UsersList;
