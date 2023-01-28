@@ -62,7 +62,7 @@ export default function AlbumsList({ user }) {
               visible={true}
             />
           ) : (
-            "+ Add User"
+            "+ Add Album"
           )}
         </button>
       </div>

@@ -47,7 +47,7 @@ function PhotosList({ album }) {
   return (
     <div>
       <div className="m-2 d-flex flex-row items-center justify-between">
-        <h3 className="text-xxl font-weight-bold">Photos in {album.title}</h3>
+        <h3 className="text font-weight-bold">Photos in {album.title}</h3>
         <button
           className="btn btn-outline-primary btn-m h-10 w-30"
           onClick={handleAddPhoto}
